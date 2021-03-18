@@ -39,5 +39,6 @@
     "eslint": "^7.22.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.22.0"
-  }
+  },
+  "homepage": "."
 }
