@@ -14,6 +14,7 @@ const MediaRow = ({file}) => {
       <td>
         <a href={file.filename}>View</a>
       </td>
+
     </tr>
   );
 };
