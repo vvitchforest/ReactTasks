@@ -8,7 +8,6 @@ const useAllMedia = () => {
     const loadMedia = async () => {
       const response = await fetch(baseUrl + 'media');
       const files = await response.json();
-      console.log(files);
 
       // 2nd fetch:
       const media = await Promise.all(files.map(async (item) => {
@@ -17,11 +16,24 @@ const useAllMedia = () => {
       }));
       setPicArray(media);
     };
-
     loadMedia();
   }, []);
 
   return picArray;
 };
 
-export {useAllMedia};
+const useSingleMedia = (id) => {
+  const [data, setData] = useState([]);
+  useEffect(()=> {
+    const loadMedia = async () => {
+      const response = await fetch(baseUrl + 'media/' + id);
+      const file = await response.json();
+      setData(file);
+    };
+    loadMedia();
+  }, []);
+
+  return data;
+};
+
+export {useAllMedia, useSingleMedia};
