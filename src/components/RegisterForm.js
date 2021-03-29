@@ -1,0 +1,43 @@
+import React from 'react';
+import useSignUpForm from '../hooks/RegisterHooks';
+import {useUsers} from '../hooks/ApiHooks';
+
+const RegisterForm = () => {
+  const {register, getUserAvailable} = useUsers();
+
+  const doRegister = async () => {
+    try {
+      console.log('Lomake lähtee');
+      const available = await getUserAvailable(inputs.username);
+      console.log('available', available);
+      if (available) {
+        register(inputs);
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+  const {inputs, handleInputChange, handleSubmit} = useSignUpForm(doRegister);
+  // console.log('Register Form: ', inputs);
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="username"
+        onChange={handleInputChange}
+        value={inputs.username} />
+      <input name="password"
+        type="password"
+        onChange={handleInputChange}
+        value={inputs.password}/>
+      <input name="email"
+        type="email"
+        onChange={handleInputChange}
+        value={inputs.email}/>
+      <input name="full_name"
+        onChange={handleInputChange}
+        value={inputs.full_name}/>
+      <button>Tallenna</button>
+    </form>
+  );
+};
+
+export default RegisterForm;
