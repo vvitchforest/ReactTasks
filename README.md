@@ -9,7 +9,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://users.metropolia.fi/~irinakon/mpjkk/week3/](http://users.metropolia.fi/~irinakon/mpjkk/week3/) to view it in the browser.
+Open [http://users.metropolia.fi/~irinakon/mpjkk/week3-login/](http://users.metropolia.fi/~irinakon/mpjkk/week3-login/) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
