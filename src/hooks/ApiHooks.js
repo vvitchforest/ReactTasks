@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import {useState, useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {baseUrl} from '../utils/variables';
 
 // general function for fetching (options default value is empty object)
@@ -65,24 +65,8 @@ const useUsers = () => {
       console.log(e.message);
     }
   };
-
-  const getUser = async (token) => {
-    const fetchOptions = {
-      method: 'GET',
-      headers: {
-        'x-access-token': token,
-      },
-    };
-    try {
-      const response = await doFetch(baseUrl + 'users/user', fetchOptions);
-      return response;
-    } catch (e) {
-      throw new Error(e.message);
-    }
-  };
-  return {register, getUserAvailable, getUser};
+  return {register, getUserAvailable};
 };
-
 
 const useLogin = () => {
   const postLogin = async (inputs) => {
