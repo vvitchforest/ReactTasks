@@ -4,7 +4,16 @@ import {useLogin} from '../hooks/ApiHooks';
 import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom';
 import {MediaContext} from '../contexts/MediaContext';
+import {TextField, makeStyles, Button} from '@material-ui/core';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
+}));
 
 const LoginForm = ({history}) => {
   const [user, setUser] = useContext(MediaContext);
@@ -21,20 +30,39 @@ const LoginForm = ({history}) => {
       console.log('do login', e.message);
     }
   };
-
+  const classes = useStyles();
   const {inputs, handleInputChange, handleSubmit} = useLoginForm(doLogin);
 
   console.log('Login Form: ', inputs, user);
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="username"
+    <form
+      className={classes.root}
+      noValidate
+      autoComplete="off"
+      onSubmit={handleSubmit}
+    >
+      <TextField
+        name="username"
         onChange={handleInputChange}
-        value={inputs.username} />
-      <input name="password"
+        value={inputs.username}
+        label="Username"
+        variant="outlined"
+      />
+      <TextField
+        name="password"
         type="password"
         onChange={handleInputChange}
-        value={inputs.password}/>
-      <button>Tallenna</button>
+        value={inputs.password}
+        label="Password"
+        variant="outlined"
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        className={classes.root}
+      >Tallenna
+      </Button>
     </form>
   );
 };
