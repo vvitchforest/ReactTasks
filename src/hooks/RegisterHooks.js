@@ -5,6 +5,7 @@ const useSignUpForm = (callback) => {
       {
         username: '',
         password: '',
+        confirm: '',
         email: '',
         full_name: '',
       },

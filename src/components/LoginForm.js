@@ -37,8 +37,6 @@ const LoginForm = ({history}) => {
   return (
     <form
       className={classes.root}
-      noValidate
-      autoComplete="off"
       onSubmit={handleSubmit}
     >
       <TextField
