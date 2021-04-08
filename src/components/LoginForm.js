@@ -25,7 +25,7 @@ const LoginForm = ({history}) => {
       console.log('user data', userData);
       localStorage.setItem('token', userData.token);
       setUser(userData.user);
-      history.push('/home');
+      history.push('/');
     } catch (e) {
       console.log('do login', e.message);
     }

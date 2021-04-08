@@ -26,19 +26,33 @@ const Nav = ({history}) => {
 
   return (
     <nav>
-      {user &&
+
       <ul>
+        {user &&
+          <>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/profile">Profile</Link>
+            </li>
+            <li>
+              <Link to="/upload">Upload</Link>
+            </li>
+          </>
+        }
+        {user ?
+
         <li>
-          <Link to="/home">Home</Link>
-        </li>
+          <Link to="/logout">Logut</Link>
+        </li> :
         <li>
-          <Link to="/profile">Profile</Link>
+          <Link to="/login">Login</Link>
         </li>
-        <li>
-          <Link to="/logout">Logout</Link>
-        </li>
+
+        }
       </ul>
-      }
+
     </nav>
   );
 };
