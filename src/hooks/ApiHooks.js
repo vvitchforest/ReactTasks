@@ -1,6 +1,9 @@
 /* eslint-disable max-len */
 import {useState, useEffect} from 'react';
 import {appIdentifier, baseUrl} from '../utils/variables';
+import {useContext} from 'react';
+import {MediaContext} from '../contexts/MediaContext';
+
 
 // general function for fetching (options default value is empty object)
 const doFetch = async (url, options = {}) => {
@@ -19,8 +22,9 @@ const doFetch = async (url, options = {}) => {
   }
 };
 
-const useAllMedia = () => {
+const useAllMedia = (ownFiles) => {
   const [picArray, setPicArray] = useState([]);
+  const [user] = useContext(MediaContext);
 
   useEffect(() => {
     const loadMedia = async () => {
@@ -28,14 +32,19 @@ const useAllMedia = () => {
       const files = await response.json();
 
       // 2nd fetch:
-      const media = await Promise.all(files.map(async (item) => {
+      let allFiles = await Promise.all(files.map(async (item) => {
         const resp = await fetch(baseUrl + 'media/' + item.file_id);
         return resp.json();
       }));
-      setPicArray(media);
+      if (ownFiles) {
+        allFiles = allFiles.filter((item) => {
+          return item.user_id === user.user_id;
+        });
+      }
+      setPicArray(allFiles);
     };
     loadMedia();
-  }, []);
+  }, [user, ownFiles]);
 
   return picArray;
 };

@@ -1,34 +1,64 @@
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
-import {Link} from 'react-router-dom';
+import {GridListTileBar, IconButton, makeStyles} from '@material-ui/core';
+import InfoIcon from '@material-ui/icons/Info';
+import {Link as RouterLink} from 'react-router-dom';
+
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)',
+  },
+}));
+
 
 const MediaRow = ({file}) => {
-  return (
-    <tr>
-      <td>
-        {/* eslint-disable-next-line max-len */}
-        <img src={file.thumbnails ? uploadsUrl + file.thumbnails.w160 : '#'} alt={file.title}/>
-      </td>
-      <td>
-        <h3>{file.title}</h3>
+  const classes = useStyles();
+  let desc = {};
 
-        <p>{file.description}</p>
-      </td>
-      <td>
-        <Link to={
-          {
-            pathname: '/single/',
-            state: file,
-          }
+  try {
+    desc = JSON.parse(file.description);
+    console.log(desc);
+  } catch (e) {
+    desc = {description: file.description};
+  }
+
+  return (
+    <>
+      <img
+        src={uploadsUrl + file.thumbnails?.w320}
+        alt={file.title}
+        style={{filter: `
+            brightness(${desc.filters?.brightness}%)
+            contrast(${desc.filters?.contrast}%)
+            saturate(${desc.filters?.saturate}%)
+            sepia(${desc.filters?.sepia}%)
+            `,
+        }}
+      />
+      <GridListTileBar
+        title={file.title}
+        subtitle={desc.description}
+        actionIcon={
+          // eslint-disable-next-line max-len
+          <IconButton aria-label={`info about ${file.title}`} className={classes.icon}
+            component={RouterLink}
+            to={{
+              pathname: '/single/',
+              state: file,
+            }}
+          >
+            <InfoIcon />
+          </IconButton>
+
         }
-        >View</Link>
-      </td>
-    </tr>
+      />
+    </>
   );
 };
 
 MediaRow.propTypes = {
   file: PropTypes.object,
 };
+
 
 export default MediaRow;
