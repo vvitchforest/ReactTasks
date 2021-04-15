@@ -44,7 +44,7 @@ const MediaTable = ({ownFiles}) => {
         </GridListTile>
         {picArray.map((item) => {
           return <GridListTile key={item.file_id} >
-            <MediaRow file={item}/>;
+            <MediaRow file={item} ownFiles={ownFiles}/>;
           </GridListTile>;
         })
         }

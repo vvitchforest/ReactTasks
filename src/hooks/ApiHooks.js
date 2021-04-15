@@ -150,7 +150,48 @@ const useMedia = () => {
       setLoading(false);
     }
   };
-  return {postMedia, loading};
+  const putMedia = async (data, id, token) => {
+    setLoading(true);
+    const fetchOptions = {
+      method: 'PUT',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    try {
+      const response = await doFetch(baseUrl + 'media/' + id, fetchOptions);
+      if (response.message) {
+      }
+      return response;
+    } catch (e) {
+      throw new Error('modify failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteMedia = async (id, token) => {
+    setLoading(true);
+    const fetchOptions = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    try {
+      const response = await doFetch(baseUrl + 'media/' + id, fetchOptions);
+      if (response.message) {
+      }
+      return response;
+    } catch (e) {
+      throw new Error('delete failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+  return {postMedia, putMedia, deleteMedia, loading};
 };
 
 const useTag = () => {

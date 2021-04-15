@@ -1,14 +1,7 @@
 import {useState} from 'react';
 
-const useUploadForm = (callback) => {
-  const [inputs, setInputs] = useState(
-      {
-        title: '',
-        description: '',
-        file: null,
-        dataUrl: '',
-      },
-  );
+const useUploadForm = (callback, initState) => {
+  const [inputs, setInputs] = useState(initState);
 
   const handleSubmit = (event) => {
     if (event) {

@@ -50,14 +50,15 @@ const Upload = ({history}) => {
       alert(e.message);
     }
   };
-  // eslint-disable-next-line max-len
-  const {
-    inputs,
-    handleInputChange,
-    handleSubmit,
-    handleFileChange,
-    setInputs,
-  } = useUploadForm(doUpload);
+
+  const {inputs, handleInputChange, handleSubmit, handleFileChange, setInputs} =
+      useUploadForm(doUpload, {
+        title: '',
+        description: '',
+        file: null,
+        dataUrl: '',
+      });
+
 
   const [sliderInputs, handleSliderChange] = useSlider({
     brightness: 100,
