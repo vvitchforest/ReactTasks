@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
 import {GridListTileBar, IconButton, makeStyles} from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+import PageviewIcon from '@material-ui/icons/Pageview';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+
 import {Link as RouterLink, withRouter} from 'react-router-dom';
 import {useMedia} from '../hooks/ApiHooks';
 
@@ -52,37 +55,42 @@ const MediaRow = ({file, ownFiles, history}) => {
                 state: file,
               }}
             >
-              <InfoIcon />
+              <PageviewIcon />
             </IconButton>
-            <IconButton
-              aria-label={`modify file`}
-              className={classes.icon}
-              component={RouterLink}
-              to={{
-                pathname: '/modify',
-                state: file,
-              }}
-            >
-              <InfoIcon />
-            </IconButton>
-            <IconButton
-              aria-label={`delete file`}
-              className={classes.icon}
-              onClick={() => {
-                try {
-                  // eslint-disable-next-line max-len
-                  const confirmDelete = confirm('Do you really want to delete?');
-                  if (confirmDelete) {
-                    deleteMedia(file.file_id, localStorage.getItem('token'));
-                  }
-                  history.push('/profile');
-                } catch (e) {
-                  console.log(e.message);
-                }
-              }}
-            >
-              <InfoIcon />
-            </IconButton>
+            {ownFiles &&
+              <>
+                <IconButton
+                  aria-label={`modify file`}
+                  className={classes.icon}
+                  component={RouterLink}
+                  to={{
+                    pathname: '/modify',
+                    state: file,
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  aria-label={`delete file`}
+                  className={classes.icon}
+                  onClick={() => {
+                    try {
+                      // eslint-disable-next-line max-len
+                      const confirmDelete = confirm('Do you really want to delete?');
+                      if (confirmDelete) {
+                        // eslint-disable-next-line max-len
+                        deleteMedia(file.file_id, localStorage.getItem('token'));
+                      }
+                      history.push('/profile');
+                    } catch (e) {
+                      console.log(e.message);
+                    }
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </>
+            }
           </>
         }
       />

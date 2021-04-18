@@ -1,69 +1,72 @@
-import {useUsers} from '../hooks/ApiHooks';
+import {useMedia, useTag, useUsers} from '../hooks/ApiHooks';
 import {Grid, Typography, Button} from '@material-ui/core';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import {useEffect} from 'react';
-import useSignUpForm from '../hooks/RegisterHooks';
 import PropTypes from 'prop-types';
+import useUploadForm from '../hooks/UploadHooks';
 
-const RegisterForm = ({setToggle}) => {
-  const {register, getUserAvailable} = useUsers();
+const ProfileForm = ({user, setUser, setUpdate}) => {
+  const {putUser, getUser} = useUsers();
+  const {postMedia} = useMedia();
+  const {postTag} = useTag();
+
   const validators = {
-    username: ['required', 'minStringLength: 3', 'isAvailable'],
-    password: ['required', 'minStringLength: 5'],
-    confirm: ['required', 'isPasswordMatch'],
+    confirm: ['isPasswordMatch'],
     email: ['required', 'isEmail'],
     full_name: ['matchRegexp:^[a-zA-Z]+(([\',. -][a-zA-Z ])?[a-zA-Z]*)*$'],
   };
 
   const errorMessages = {
     // eslint-disable-next-line max-len
-    username: ['Required', 'Minimum 3 characters', 'Username is already taken'],
-    password: ['Required', 'Minimum 5 characters'],
-    confirm: ['Required', 'Passwords do not match'],
+    confirm: ['Passwords do not match'],
     email: ['Required', 'Email is not valid'],
     full_name: ['Only letters please'],
   };
 
-  const doRegister = async () => {
+  const doUpdate = async () => {
     try {
-      console.log('rekisteröinti lomake lähtee');
-      const available = await getUserAvailable(inputs.username);
-      console.log('availabale', available);
-      if (available) {
-        delete inputs.confirm;
-        const result = await register(inputs);
-        if (result.message.length > 0) {
-          alert(result.message);
-          setToggle(true);
+      console.log('user muokkaus lomake lähtee');
+      if (inputs.file) {
+        const formData = new FormData();
+        formData.append('title', inputs.username);
+        formData.append('file', inputs.file);
+        // eslint-disable-next-line max-len
+        const fileResult = await postMedia(formData, localStorage.getItem('token'));
+        const tagResult = await postTag(
+            localStorage.getItem('token'),
+            fileResult.file_id,
+            'avatar_'+user.user_id,
+        );
+        console.log('tag result', fileResult, tagResult);
+        if (fileResult) {
+          alert(tagResult.message);
+          setUpdate(true);
         }
+      }
+      delete inputs.confirm;
+      delete inputs.file;
+      const result = await putUser(inputs, localStorage.getItem('token'));
+      console.log('doUpdate', result);
+      if (result) {
+        alert(result.message);
+        const userData = await getUser(localStorage.getItem('token'));
+        setUser(userData);
+        // reset form (password and confirm)
+        setInputs((inputs) => ({
+          ...inputs,
+          password: '',
+          confirm: '',
+        }));
       }
     } catch (e) {
       console.log(e.message);
     }
   };
 
-  const {inputs, handleInputChange, handleSubmit} = useSignUpForm(doRegister, {
-    username: '',
-    password: '',
-    confirm: '',
-    email: '',
-    full_name: '',
-  });
+  // eslint-disable-next-line max-len
+  const {inputs, handleInputChange, handleSubmit, handleFileChange, setInputs} = useUploadForm(doUpdate, user);
 
-  useEffect(()=>{
-    ValidatorForm.addValidationRule('isAvailable', async (value) => {
-      if (value.length > 2) {
-        try {
-          const available = await getUserAvailable(value);
-          console.log('User available?', available);
-          return available;
-        } catch (e) {
-          console.log(e.message);
-          return true;
-        }
-      }
-    });
-
+  useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch',
         (value) => (value === inputs.password),
     );
@@ -75,7 +78,7 @@ const RegisterForm = ({setToggle}) => {
         <Typography
           component="h1"
           variant="h2"
-          gutterBottom>Register</Typography>
+          gutterBottom>Edit user</Typography>
       </Grid>
       <Grid item xs={12}>
         <ValidatorForm onSubmit={handleSubmit}>
@@ -83,24 +86,10 @@ const RegisterForm = ({setToggle}) => {
             <Grid container item>
               <TextValidator
                 fullWidth
-                type="text"
-                name="username"
-                label="Username"
-                onChange={handleInputChange}
-                value={inputs.username}
-                validators={validators.username}
-                errorMessages={errorMessages.username}
-              />
-            </Grid>
-
-            <Grid container item>
-              <TextValidator
-                fullWidth
                 type="password"
                 name="password"
                 label="Password"
                 onChange={handleInputChange}
-                value={inputs.password}
                 validators={validators.password}
                 errorMessages={errorMessages.password}
               />
@@ -113,7 +102,6 @@ const RegisterForm = ({setToggle}) => {
                 name="confirm"
                 label="Confirm password"
                 onChange={handleInputChange}
-                value={inputs.confirm}
                 validators={validators.confirm}
                 errorMessages={errorMessages.confirm}
               />
@@ -126,7 +114,7 @@ const RegisterForm = ({setToggle}) => {
                 name="email"
                 label="Email"
                 onChange={handleInputChange}
-                value={inputs.email}
+                value={inputs?.email}
                 validators={validators.email}
                 errorMessages={errorMessages.email}
               />
@@ -139,12 +127,20 @@ const RegisterForm = ({setToggle}) => {
                 name="full_name"
                 label="Full name"
                 onChange={handleInputChange}
-                value={inputs.full_name}
+                value={inputs?.full_name}
                 validators={validators.full_name}
                 errorMessages={errorMessages.full_name}
               />
             </Grid>
-
+            <Grid item xs={12}>
+              <TextValidator
+                fullWidth
+                type="file"
+                name="file"
+                accept="image/*, audio/*, video/*"
+                onChange={handleFileChange}
+              />
+            </Grid>
             <Grid container item>
               <Button fullWidth
                 color="primary"
@@ -160,8 +156,10 @@ const RegisterForm = ({setToggle}) => {
   );
 };
 
-RegisterForm.propTypes = {
-  setToggle: PropTypes.func,
+ProfileForm.propTypes = {
+  user: PropTypes.object,
+  setUser: PropTypes.func,
+  setUpdate: PropTypes.func,
 };
 
-export default RegisterForm;
+export default ProfileForm;

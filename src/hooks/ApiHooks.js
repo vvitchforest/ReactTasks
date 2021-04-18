@@ -66,6 +66,24 @@ const useUsers = () => {
     }
   };
 
+  const putUser = async (inputs, token) => {
+    const fetchOptions = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token,
+
+      },
+      body: JSON.stringify(inputs),
+    };
+    try {
+      const response = await doFetch(baseUrl + 'users', fetchOptions);
+      return response;
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
   const getUserAvailable = async (username) => {
     try {
       const response = await doFetch(baseUrl + 'users/username/' + username);
@@ -105,7 +123,7 @@ const useUsers = () => {
     }
   };
 
-  return {register, getUserAvailable, getUser, getUserById};
+  return {register, getUserAvailable, getUser, putUser, getUserById};
 };
 
 
@@ -218,7 +236,17 @@ const useTag = () => {
       throw new Error('tagging failed');
     }
   };
-  return {postTag};
+
+  const getTag = async (tag) => {
+    try {
+      const response = await doFetch(baseUrl + 'tags/' + tag);
+      return response;
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  return {postTag, getTag};
 };
 
 

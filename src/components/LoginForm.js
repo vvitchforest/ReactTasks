@@ -31,7 +31,10 @@ const LoginForm = ({history}) => {
     }
   };
   const classes = useStyles();
-  const {inputs, handleInputChange, handleSubmit} = useLoginForm(doLogin);
+  const {inputs, handleInputChange, handleSubmit} = useLoginForm(doLogin, {
+    username: '',
+    password: '',
+  });
 
   console.log('Login Form: ', inputs, user);
   return (

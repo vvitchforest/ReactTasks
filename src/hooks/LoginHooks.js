@@ -1,12 +1,7 @@
 import {useState} from 'react';
 
-const useLoginForm = (callback) => {
-  const [inputs, setInputs] = useState(
-      {
-        username: '',
-        password: '',
-      },
-  );
+const useLoginForm = (callback, initState) => {
+  const [inputs, setInputs] = useState(initState);
 
   const handleSubmit = (event) => {
     if (event) {
