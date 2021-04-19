@@ -78,36 +78,39 @@ const ProfileForm = ({user, setUser, setUpdate}) => {
         <Typography
           component="h1"
           variant="h2"
-          gutterBottom>Edit user</Typography>
+          gutterBottom>Update profile</Typography>
       </Grid>
       <Grid item xs={12}>
         <ValidatorForm onSubmit={handleSubmit}>
           <Grid container>
-            <Grid container item>
+
+            <Grid item xs={12}>
               <TextValidator
                 fullWidth
                 type="password"
                 name="password"
                 label="Password"
+                value={inputs?.password}
                 onChange={handleInputChange}
                 validators={validators.password}
                 errorMessages={errorMessages.password}
               />
             </Grid>
 
-            <Grid container item>
+            <Grid item xs={12}>
               <TextValidator
                 fullWidth
                 type="password"
                 name="confirm"
                 label="Confirm password"
+                value={inputs?.confirm}
                 onChange={handleInputChange}
                 validators={validators.confirm}
                 errorMessages={errorMessages.confirm}
               />
             </Grid>
 
-            <Grid container item>
+            <Grid item xs={12}>
               <TextValidator
                 fullWidth
                 type="email"
@@ -120,7 +123,7 @@ const ProfileForm = ({user, setUser, setUpdate}) => {
               />
             </Grid>
 
-            <Grid container item>
+            <Grid item xs={12}>
               <TextValidator
                 fullWidth
                 type="text"
@@ -132,21 +135,23 @@ const ProfileForm = ({user, setUser, setUpdate}) => {
                 errorMessages={errorMessages.full_name}
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextValidator
                 fullWidth
                 type="file"
                 name="file"
-                accept="image/*, audio/*, video/*"
+                accept="image/*"
                 onChange={handleFileChange}
               />
             </Grid>
-            <Grid container item>
+
+            <Grid item xs={12}>
               <Button fullWidth
                 color="primary"
                 type="submit"
                 variant="contained">
-                Register
+                Update
               </Button>
             </Grid>
           </Grid>

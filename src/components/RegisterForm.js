@@ -70,6 +70,7 @@ const RegisterForm = ({setToggle}) => {
   }, [inputs]);
 
   return (
+
     <Grid container>
       <Grid item xs={12}>
         <Typography

@@ -2,7 +2,7 @@ import useUploadForm from '../hooks/UploadHooks';
 import {useMedia, useTag} from '../hooks/ApiHooks';
 import {
   Button,
-  CircularProgress,
+  CircularProgress, Container,
   Grid,
   Slider,
   Typography,
@@ -93,20 +93,21 @@ const Upload = ({history}) => {
 
   return (
     <>
-      <BackButton />
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography
-            component="h1"
-            variant="h2"
-            gutterBottom
-          >
+      <Container maxWidth="md">
+        <BackButton />
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography
+              component="h1"
+              variant="h2"
+              gutterBottom
+            >
           Upload
-          </Typography>
-        </Grid>
+            </Typography>
+          </Grid>
 
-        <Grid item>
-          {!loading ?
+          <Grid item>
+            {!loading ?
         <ValidatorForm onSubmit={handleSubmit}>
           <Grid container>
             <Grid item xs={12} >
@@ -227,9 +228,10 @@ const Upload = ({history}) => {
           </Grid>
         </ValidatorForm> :
         <CircularProgress/>
-          }
+            }
+          </Grid>
         </Grid>
-      </Grid>
+      </Container>
     </>
   );
 }

@@ -2,16 +2,18 @@ import {useContext, useEffect, useState} from 'react';
 import {MediaContext} from '../contexts/MediaContext';
 import {Link as RouterLink} from 'react-router-dom';
 import {
-  Card, CardActionArea,
+  Card, CardContent,
   Container,
   Grid,
-  Avatar,
+  Avatar, List,
   ListItem,
   ListItemAvatar,
   ListItemIcon, ListItemText,
-  Typography,
+  Typography, Button,
 } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
+import PersonIcon from '@material-ui/icons/Person';
+import EmailIcon from '@material-ui/icons/Email';
 import ProfileForm from '../components/ProfileForm';
 import BackButton from '../components/BackButton';
 import {useTag} from '../hooks/ApiHooks';
@@ -44,7 +46,7 @@ const Profile = () => {
 
   return (
     <>
-      <Container>
+      <Container maxWidth="md">
         <BackButton/>
         <Typography
           component="h1"
@@ -54,33 +56,42 @@ const Profile = () => {
         </Typography>
         {user &&
             <Card>
-              <CardActionArea>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar variant={'square'} src={avatar} />
-                  </ListItemAvatar>
-                  <ListItemText primary={user.username} />
-                </ListItem>
-                <p>{user.username}</p>
-                <p>{user.full_name}</p>
-                <p>{user.email}</p>
-
-                <ListItem component={RouterLink} to="/myfiles">
-           MyFiles
-                </ListItem>
-                <ListItem button onClick={()=> {
-                  setToggleForm(!toggleForm);
-                }}>
-                  <ListItemIcon>
-                    <CreateIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary=
-                      {toggleForm ? 'Close update profile' : 'Update profile' }
-                  />
-                </ListItem>
-
-              </CardActionArea>
+              <CardContent>
+                <List>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar variant={'square'} src={avatar} />
+                    </ListItemAvatar>
+                    <ListItemText primary={user.username} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <EmailIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={user.email} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <PersonIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={user.full_name} />
+                  </ListItem>
+                  <ListItem component={RouterLink} to="/myfiles">
+                    <Button color="primary">My files</Button>
+                  </ListItem>
+                  <ListItem button onClick={()=> {
+                    setToggleForm(!toggleForm);
+                  }}>
+                    <ListItemIcon>
+                      <CreateIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary=
+                        {toggleForm ? 'Close update profile' : 'Update profile'}
+                    />
+                  </ListItem>
+                </List>
+              </CardContent>
             </Card>
         }
         {toggleForm &&

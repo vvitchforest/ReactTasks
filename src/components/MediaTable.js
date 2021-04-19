@@ -40,7 +40,7 @@ const MediaTable = ({ownFiles}) => {
         cols={matches ? 3 : 2}
       >
         <GridListTile key="Subheader" cols={3} style={{height: 'auto'}}>
-          <ListSubheader component="div">Media feed</ListSubheader>
+          <ListSubheader component="div">All media</ListSubheader>
         </GridListTile>
         {picArray.map((item) => {
           return <GridListTile key={item.file_id} >

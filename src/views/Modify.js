@@ -2,7 +2,7 @@ import useUploadForm from '../hooks/UploadHooks';
 import {useMedia} from '../hooks/ApiHooks';
 import {
   Button,
-  CircularProgress,
+  CircularProgress, Container,
   Grid,
   Slider,
   Typography,
@@ -61,20 +61,21 @@ const Modify = ({history, location}) => {
 
   return (
     <>
-      <BackButton />
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography
-            component="h1"
-            variant="h2"
-            gutterBottom
-          >
+      <Container maxWidth="md">
+        <BackButton />
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography
+              component="h1"
+              variant="h2"
+              gutterBottom
+            >
           Modify
-          </Typography>
-        </Grid>
+            </Typography>
+          </Grid>
 
-        <Grid item>
-          {!loading ?
+          <Grid item>
+            {!loading ?
         <ValidatorForm onSubmit={handleSubmit}>
           <Grid container>
             <Grid item xs={12} >
@@ -99,21 +100,12 @@ const Modify = ({history, location}) => {
                 errorMessages={errorMessages.description}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                color="primary"
-                variant="contained"
-                fullWidth
-              >Send</Button>
-            </Grid>
-
             <Grid container
               direction="column"
               alignItems="center"
               justify="center"
             >
-              <Grid item xs={4}>
+              <Grid item xs={6}>
                 <img
                   src={uploadsUrl + file.filename}
                   style={{
@@ -180,15 +172,25 @@ const Modify = ({history, location}) => {
                     onChange={handleSliderChange}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    color="primary"
+                    variant="contained"
+                    fullWidth
+                    style={{marginBottom: '10%'}}
+                  >Send</Button>
+                </Grid>
               </Grid>
             </Grid>
 
           </Grid>
         </ValidatorForm> :
         <CircularProgress/>
-          }
+            }
+          </Grid>
         </Grid>
-      </Grid>
+      </Container>
     </>
   );
 }
